@@ -1,0 +1,22 @@
+get board element from DOM
+    get element by ID
+    already a table element
+
+makeBoard function
+create array
+    make subarray
+        nested forLoop
+
+creates board to play
+    return array matrix
+        6rows tr
+        7columns td
+
+
+makeHTMLBoard
+create loop through width
+    create td ele and append to row
+create loop through height
+    create tr ele and append to table
+
+
