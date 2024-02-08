@@ -77,13 +77,24 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // write the real version of this, rather than always returning 5
-  return 5;
+  for (let y = HEIGHT - 1; y >= 0; y--) {
+    if (board[y][x] === null) {
+      return y;
+    }
+  }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  let piece = document.createElement('div');
+  piece.classList.add('piece', `p${currPlayer}`);
+
+  let tableCell = document.getElementById(`c-${y}-${x}`);
+  tableCell.append(piece);
+  board[y][x] = currPlayer;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -99,7 +110,21 @@ function checkForWin() {
 
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
+    let colorCheck;
 
+    let rowCheck = cells.every(cell => cell[0] < HEIGHT && cell[0] >= 0);
+    let columnCheck = cells.every(cell => cell[1] < WIDTH && cell[1] >= 0);
+
+    if (rowCheck && columnCheck) {
+      colorCheck = cells.every(([y, x]) => board[y][x] === currPlayer);
+
+      if (colorCheck) {
+        console.log(colorCheck);
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -113,9 +138,9 @@ function checkForWin() {
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert;
-      let diagDL;
-      let diagDR;
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDL = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];;
+      let diagDR = [[y, x], [y - 1, x + 1], [y - 2, x + 1], [y - 3, x + 1]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
@@ -137,13 +162,13 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   const x = Number(evt.target.id.slice("top-".length));
-
+  /* console.log(x); */
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
   if (y === null) {
     return;
   }
-
+  /* console.log(y); */
   // place piece in board and add to HTML table
   // TODO: add line to update global `board` variable with new piece
   placeInTable(y, x);

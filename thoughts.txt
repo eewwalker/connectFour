@@ -20,3 +20,18 @@ create loop through height
     create tr ele and append to table
 
 
+step 4: findSpotForCol
+Iterate over x column from the last row to the first
+
+Step 5:
+placeInTable & Piece CSS
+1. create div element
+2. Add class names : piece, p1/p2
+3. Make the piece css class a circle
+4. Add different colors to each player
+
+Step 6:
+1. Define direction variables - vert, diagonals
+2. Loop through every cell and call win() function
+to check if it's a winner cell
+3. Check if the arrays are legal
