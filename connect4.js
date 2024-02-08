@@ -94,7 +94,6 @@ function placeInTable(y, x) {
 
   let tableCell = document.getElementById(`c-${y}-${x}`);
   tableCell.append(piece);
-  board[y][x] = currPlayer;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -154,6 +153,7 @@ function checkForWin() {
 /** endGame: announce game end */
 
 function endGame(msg) {
+  msg = 'GAME OVER';
   alert(msg);
 }
 
@@ -162,16 +162,15 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   const x = Number(evt.target.id.slice("top-".length));
-  /* console.log(x); */
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
   if (y === null) {
     return;
   }
-  /* console.log(y); */
   // place piece in board and add to HTML table
   // TODO: add line to update global `board` variable with new piece
   placeInTable(y, x);
+  board[y][x] = currPlayer;
 
   // check for win
   if (checkForWin()) {
@@ -181,8 +180,24 @@ function handleClick(evt) {
   // check for tie: if top row is filled, board is filled
   // TODO: check if all cells in board are filled; if so, call endGame
 
+  // let isBoardFilled = board.every(cell => cell.includes(null));
+  // if (!isBoardFilled) {
+  //   endGame();
+  // }
+  let count = 0;
+  for (let i = 0; i < WIDTH; i++) {
+    if (board[0][i] !== null) {
+      count++;
+    }
+    if (count === WIDTH) {
+      endGame();
+    }
+
+  }
+
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  //switch currPlayer 1 <-> 2
+  currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** Start game. */
